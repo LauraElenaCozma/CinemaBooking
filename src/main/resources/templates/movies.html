@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
+    <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="panel-heading mt-4" style="background-color:#F9F9F9;">
+        <h1 class="panel-title">Current movies</h1>
+    </div>
+    <table class="table table-hover mt-5">
+        <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Duration</th>
+            <th>Genre</th>
+            <th>Info</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tr th:each="movie, stat : ${movies}"
+            class="table table-striped">
+            <td th:text="${movie.id}">1</td>
+            <td th:text="${movie.title}">Product 1</td>
+            <td th:text="${movie.duration}">Code</td>
+            <td th:text="${movie.genre}">Reserved price</td>
+            <td><a href="#" th:href="@{'/movies/' + ${movie.id}}">Info</a></td>
+            <td><a href="#" th:href="@{'/movies/delete/' + ${movie.id}}">Delete</a></td>
+        </tr>
+    </table>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <a class="btn btn-primary" role="button" th:href="@{'/movies/new'}">Add movie</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

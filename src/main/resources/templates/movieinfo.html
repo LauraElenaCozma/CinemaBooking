@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Info</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<body>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading mt-4" style="background-color:#F9F9F9;">
+            <h1 class="panel-title" >Movie</h1>
+        </div>
+        <div class="panel-body">
+            <div class="row ml-0 mt-5">
+                <div>
+                    <strong>
+                        <label>Title:</label>
+                    </strong>
+                </div>
+
+                <div class="ml-2">
+                    <p th:text="${movie.title}">code</p>
+                </div>
+            </div>
+            <div class="row mt-3 ml-0">
+                <div>
+                    <strong>
+                        <label>Duration:</label>
+                    </strong>
+                </div>
+                <div class="ml-2">
+                    <p th:text="${movie.duration} + ' minutes'">code</p>
+                </div>
+            </div>
+            <div class="row mt-3 ml-0">
+                <div>
+                    <strong>
+                        <label>Genre:</label>
+                    </strong>
+                </div>
+                <div class="ml-2">
+                    <p th:text="${movie.genre}"></p>
+                </div>
+            </div>
+            <div class="row mt-3 ml-0">
+                <div>
+                    <strong>
+                        <label>Main actors:</label>
+                    </strong>
+                </div>
+                <ul  style="list-style: none;" class="pl-2">
+                    <li th:each="actor: ${movie.actors}" >
+                        <p th:text="${actor.firstName} + ' ' + ${actor.lastName}"> </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="row mt-3 ml-0">
+                <div>
+                    <strong>
+                        <label>Description:</label>
+                    </strong>
+                </div>
+                <div class="ml-2">
+                    <p th:text="${info.description}">code</p>
+                </div>
+            </div>
+            <div class="row mt-3 ml-0">
+                <div>
+                    <strong>
+                        <label>Director:</label>
+                    </strong>
+                </div>
+                <div class="ml-2">
+                    <p th:text="${info.director}">code</p>
+                </div>
+            </div>
+            <div class="row mt-3 ml-0">
+                <div>
+                    <strong>
+                        <label>Rating:</label>
+                    </strong>
+                </div>
+                <div class="ml-2">
+                    <p th:text="${info.rating}">code</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="col-ml-0">
+        <div class="mt-3">
+            <a class="btn btn-primary" role="button" th:href="@{'/movies/update/' + ${movie.id}}">Update movie</a>
+        </div>
+
+        <div class="mt-3">
+            <a class="btn btn-primary" role="button" th:href="@{'/showings/new'}">New movie showing</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
