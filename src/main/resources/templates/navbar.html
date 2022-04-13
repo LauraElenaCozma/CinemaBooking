@@ -21,7 +21,11 @@
 
             <li><a class="nav-link" th:classappend="${#httpServletRequest.getRequestURI() == '/bookings' ? 'active':''}" th:href="@{/bookings}">My bookings</a></li>
 
-            <li><a class="nav-link" th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}" th:href="@{/logout}">Logout</a></li>
+            <li>
+                <form  id="logoutform" th:action="@{/logout}" method="POST">
+                    <a class="nav-link" href="#" onclick="document.getElementById('logoutform').submit()">Logout</a>
+                </form>
+            </li>
 
 
         </ul>
