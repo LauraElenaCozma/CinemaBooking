@@ -6,9 +6,12 @@ import com.awbd.CinemaBookings.service.ActorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -20,14 +23,22 @@ public class ActorController {
 
     @RequestMapping("/new")
     public String createActor(Model model) {
-        model.addAttribute("actor", new Actor());
-        model.addAttribute("title", "Create new actor");
+        if(!model.containsAttribute("actor"))
+            model.addAttribute("actor", new Actor());
         return "actorform";
     }
 
     @PostMapping
-    public String saveOrUpdateActor(@ModelAttribute Actor actor) {
-        Actor savedActor = actorService.save(actor);
+    public String saveOrUpdateActor(@Valid @ModelAttribute("actor") Actor actor, BindingResult bindingResult,
+                                    RedirectAttributes attr) {
+        if (bindingResult.hasErrors()) {
+            attr.addFlashAttribute("org.springframework.validation.BindingResult.actor", bindingResult);
+            attr.addFlashAttribute("actor", actor);
+            if(actor.getId() != null)
+                return "redirect:/actors/update/" + actor.getId().toString();
+            return "redirect:/actors/new";
+        }
+        actorService.save(actor);
         return "redirect:/actors";
     }
 
@@ -54,8 +65,8 @@ public class ActorController {
     @RequestMapping("/update/{id}")
     public String updateActor(@PathVariable String id, Model model) {
         Actor actor = actorService.findById(Long.valueOf(id));
-        model.addAttribute("title", "Update actor info");
-        model.addAttribute("actor", actor);
+        if(!model.containsAttribute("actor"))
+            model.addAttribute("actor", actor);
         return "actorform";
     }
 }

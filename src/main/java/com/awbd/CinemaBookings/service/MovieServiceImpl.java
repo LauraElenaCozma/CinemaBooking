@@ -2,6 +2,7 @@ package com.awbd.CinemaBookings.service;
 
 import com.awbd.CinemaBookings.domain.Actor;
 import com.awbd.CinemaBookings.domain.Movie;
+import com.awbd.CinemaBookings.exception.MovieNotFoundException;
 import com.awbd.CinemaBookings.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class MovieServiceImpl implements MovieService{
 
     @Override
     public Movie findById(Long id) {
-        return movieRepository.findById(id).orElseThrow(RuntimeException::new);
+        return movieRepository.findById(id).orElseThrow(() -> new MovieNotFoundException(id));
     }
 
     @Override
@@ -41,7 +42,7 @@ public class MovieServiceImpl implements MovieService{
     public Movie update(Long id, Movie updatedMovie) {
         Optional<Movie> movie = movieRepository.findById(id);
         if(movie.isEmpty())
-            throw new RuntimeException("Movie not found");
+            throw new MovieNotFoundException(id);
         Movie newMovie = movie.get();
         newMovie.setTitle(updatedMovie.getTitle());
         newMovie.setDuration(updatedMovie.getDuration());

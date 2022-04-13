@@ -1,6 +1,7 @@
 package com.awbd.CinemaBookings.service;
 
 import com.awbd.CinemaBookings.domain.Customer;
+import com.awbd.CinemaBookings.exception.CustomerNotFoundException;
 import com.awbd.CinemaBookings.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public Customer findById(Long id) {
-        return customerRepository.findById(id).orElseThrow(RuntimeException::new);
+        return customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
     }
 
     @Override

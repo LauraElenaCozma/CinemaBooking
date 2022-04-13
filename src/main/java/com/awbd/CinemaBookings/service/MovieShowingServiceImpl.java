@@ -1,6 +1,7 @@
 package com.awbd.CinemaBookings.service;
 
 import com.awbd.CinemaBookings.domain.MovieShowing;
+import com.awbd.CinemaBookings.exception.MovieShowingNotFoundException;
 import com.awbd.CinemaBookings.repository.MovieShowingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class MovieShowingServiceImpl implements MovieShowingService {
 
     @Override
     public MovieShowing findById(Long id) {
-        return movieShowingRepository.findById(id).orElseThrow(RuntimeException::new);
+        return movieShowingRepository.findById(id).orElseThrow(() -> new MovieShowingNotFoundException(id));
     }
 
     @Override

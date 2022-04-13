@@ -1,6 +1,7 @@
 package com.awbd.CinemaBookings.service;
 
 import com.awbd.CinemaBookings.domain.Venue;
+import com.awbd.CinemaBookings.exception.VenueNotFoundException;
 import com.awbd.CinemaBookings.repository.VenueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class VenueServiceImpl implements VenueService {
 
     @Override
     public Venue findById(Long id) {
-        return venueRepository.findById(id).orElseThrow(RuntimeException::new);
+        return venueRepository.findById(id).orElseThrow(() -> new VenueNotFoundException(id));
     }
 
     @Override

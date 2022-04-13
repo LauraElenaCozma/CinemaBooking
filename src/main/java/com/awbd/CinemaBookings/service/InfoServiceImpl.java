@@ -1,6 +1,7 @@
 package com.awbd.CinemaBookings.service;
 
 import com.awbd.CinemaBookings.domain.Info;
+import com.awbd.CinemaBookings.exception.InfoNotFoundException;
 import com.awbd.CinemaBookings.repository.InfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class InfoServiceImpl implements InfoService{
 
     @Override
     public Info findById(Long id) {
-        return infoRepository.findById(id).orElseThrow(RuntimeException::new);
+        return infoRepository.findById(id).orElseThrow(() -> new InfoNotFoundException(id));
     }
 
     @Override

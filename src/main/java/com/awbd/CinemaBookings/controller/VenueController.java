@@ -6,9 +6,12 @@ import com.awbd.CinemaBookings.service.VenueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -20,14 +23,22 @@ public class VenueController {
 
     @RequestMapping("/new")
     public String createVenue(Model model) {
-        model.addAttribute("venue", new Venue());
-        model.addAttribute("title", "Create new venue");
+        if(!model.containsAttribute("venue"))
+            model.addAttribute("venue", new Venue());
         return "venueform";
     }
 
     @PostMapping
-    public String saveOrUpdateVenue(@ModelAttribute Venue venue) {
-        Venue savedVenue = venueService.save(venue);
+    public String saveOrUpdateVenue(@Valid @ModelAttribute("venue") Venue venue, BindingResult bindingResult,
+                                    RedirectAttributes attr) {
+        if(bindingResult.hasErrors()) {
+            attr.addFlashAttribute("org.springframework.validation.BindingResult.venue", bindingResult);
+            attr.addFlashAttribute("venue", venue);
+            if (venue.getId() != null)
+                return "redirect:/venues/update/" + venue.getId().toString();
+            return "redirect:/venues/new";
+        }
+        venueService.save(venue);
         return "redirect:/venues";
     }
 
@@ -54,8 +65,8 @@ public class VenueController {
     @RequestMapping("/update/{id}")
     public String updateVenue(@PathVariable String id, Model model) {
         Venue venue = venueService.findById(Long.valueOf(id));
-        model.addAttribute("title", "Update venue info");
-        model.addAttribute("venue", venue);
+        if(!model.containsAttribute("venue"))
+            model.addAttribute("venue", venue);
         return "venueform";
     }
 }

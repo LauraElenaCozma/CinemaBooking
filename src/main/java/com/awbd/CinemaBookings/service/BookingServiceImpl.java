@@ -1,6 +1,7 @@
 package com.awbd.CinemaBookings.service;
 
 import com.awbd.CinemaBookings.domain.Booking;
+import com.awbd.CinemaBookings.exception.BookingNotFoundException;
 import com.awbd.CinemaBookings.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking findById(Long id) {
-        return bookingRepository.findById(id).orElseThrow(RuntimeException::new);
+        return bookingRepository.findById(id).orElseThrow(() -> new BookingNotFoundException(id));
     }
 
     @Override
@@ -40,9 +41,8 @@ public class BookingServiceImpl implements BookingService {
     public Booking update(Long id, Booking updatedBooking) {
         Optional<Booking> booking = bookingRepository.findById(id);
         if(booking.isEmpty())
-            throw new RuntimeException("No booking found");
+            throw new BookingNotFoundException(id);
         Booking newBooking = booking.get();
-        newBooking.setMovieDate(updatedBooking.getMovieDate());
         newBooking.setNumReservedSeats(updatedBooking.getNumReservedSeats());
         return bookingRepository.save(newBooking);
     }
