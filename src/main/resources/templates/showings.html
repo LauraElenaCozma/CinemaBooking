@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Products</title>
@@ -23,7 +23,9 @@
             <th>Date</th>
             <th>Hour</th>
             <th>Info</th>
-            <th>Delete</th>
+            <div sec:authorize="hasRole('ADMIN')">
+                <th>Delete</th>
+            </div>
         </tr>
         </thead>
         <tr th:each="showing, stat : ${movieShowings}"
@@ -33,13 +35,15 @@
             <td th:text="${showing.date}">Reserved price</td>
             <td th:text="${showing.hour}">Reserved price</td>
             <td><a href="#" th:href="@{'/showings/' + ${showing.id}}">Info</a></td>
+            <div sec:authorize="hasRole('ADMIN')">
             <td><a href="#" th:href="@{'/showings/delete/' + ${showing.id}}">Delete</a></td>
+            </div>
         </tr>
     </table>
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6" sec:authorize="hasRole('ADMIN')">
             <a class="btn btn-primary" role="button" th:href="@{'/showings/new'}">Add a new movie showing</a>
         </div>
     </div>

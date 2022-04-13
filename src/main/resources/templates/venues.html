@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Products</title>
@@ -21,7 +21,9 @@
             <th>Venue name</th>
             <th>Location Name</th>
             <th>Info</th>
+            <div sec:authorize="hasRole('ADMIN')">
             <th>Delete</th>
+            </div>
         </tr>
         </thead>
         <tr th:each="venue, stat : ${venues}"
@@ -30,14 +32,17 @@
             <td th:text="${venue.venueName}"></td>
             <td th:text="${venue.locationName}"></td>
             <td><a href="#" th:href="@{'/venues/' + ${venue.id}}">Info</a></td>
+            <div sec:authorize="hasRole('ADMIN')">
             <td><a href="#" th:href="@{'/venues/delete/' + ${venue.id}}">Delete</a></td>
+            </div>
         </tr>
     </table>
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
-            <a class="btn btn-primary" role="button" th:href="@{'/venues/new'}">Add venue</a>        </div>
+        <div class="col-md-6" sec:authorize="hasRole('ADMIN')">>
+            <a class="btn btn-primary" role="button" th:href="@{'/venues/new'}">Add venue</a>
+        </div>
     </div>
 </div>
 </body>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Movie Showing Info</title>
@@ -50,7 +50,7 @@
 
 <div class="container">
     <div class="col-ml-0">
-        <div class="mt-3">
+        <div class="mt-3" sec:authorize="hasRole('ADMIN')">
             <a class="btn btn-primary" role="button" th:href="@{'/venues/update/' + ${venue.id}}">Update venue info</a>
         </div>
     </div>

@@ -42,6 +42,7 @@ public class HomeController {
         return "registerform";
     }
 
+
     @PostMapping("/process_register")
     public String processRegister(@Valid @ModelAttribute("user")User user, BindingResult bindingResult,
                                   RedirectAttributes attr) {

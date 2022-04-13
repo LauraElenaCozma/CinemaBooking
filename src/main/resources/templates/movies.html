@@ -22,7 +22,9 @@
             <th>Duration</th>
             <th>Genre</th>
             <th>Info</th>
+            <div sec:authorize="hasRole('ADMIN')">
             <th>Delete</th>
+            </div>
         </tr>
         </thead>
         <tbody>
@@ -33,7 +35,9 @@
             <td th:text="${movie.duration}">Code</td>
             <td th:text="${movie.genre}">Reserved price</td>
             <td><a href="#" th:href="@{'/movies/' + ${movie.id}}">Info</a></td>
+            <div sec:authorize="hasRole('ADMIN')">
             <td><a href="#" th:href="@{'/movies/delete/' + ${movie.id}}">Delete</a></td>
+            </div>
         </tr>
         </tbody>
 
@@ -41,7 +45,7 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-md-6" sec:authorize="hasRole('CUSTOMER')">
+        <div class="col-md-6" sec:authorize="hasRole('ADMIN')">
             <a class="btn btn-primary" role="button" th:href="@{'/movies/new'}">Add movie</a>
         </div>
     </div>
