@@ -36,6 +36,10 @@ public class DataLoader implements CommandLineRunner {
                     .build();
             User guest = User.builder()
                     .username("customer")
+                    .firstName("Erika")
+                    .lastName("Sandy")
+                    .email("erikasandy@gmail.com")
+                    .phoneNumber("0722198832")
                     .password(passwordEncoder.encode("1234"))
                     .authority(guestRole)
                     .build();

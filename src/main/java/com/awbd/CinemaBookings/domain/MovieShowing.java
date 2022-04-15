@@ -1,8 +1,6 @@
 package com.awbd.CinemaBookings.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -14,6 +12,9 @@ import java.util.List;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MovieShowing {
 
     @Id

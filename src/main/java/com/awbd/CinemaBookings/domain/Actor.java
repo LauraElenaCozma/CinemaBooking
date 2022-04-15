@@ -1,8 +1,6 @@
 package com.awbd.CinemaBookings.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -13,6 +11,9 @@ import java.util.List;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Actor {
 
     @Id
@@ -31,6 +32,9 @@ public class Actor {
     @DateTimeFormat(iso=DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
     @NotNull(message = "Date of birth must not be empty!")
     private java.util.Date dateOfBirth;
+
+    @Size(max = 50, message = "Place of birth must not be longer than 50 characters")
+    private String placeOfBirth;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

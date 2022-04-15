@@ -73,7 +73,7 @@
                     </strong>
                 </div>
                 <div class="ml-2">
-                    <p th:text="${showing.venue.locationName} + ' - ' + ${showing.venue.venueName}"></p>
+                    <a href="#" th:href="@{'/venues/' + ${showing.venue.id}}" th:text="${showing.venue.locationName} + ' - ' + ${showing.venue.venueName}"></a>
                 </div>
             </div>
         </div>
@@ -84,6 +84,13 @@
     <div class="col-ml-0">
         <div class="mt-3" sec:authorize="hasRole('ADMIN')">
             <a class="btn btn-primary" role="button" th:href="@{'/showings/update/' + ${showing.id}}">Update movie showing</a>
+        </div>
+    </div>
+    <div class="col-ml-0">
+        <div class="mt-3" sec:authorize="hasRole('CUSTOMER')">
+            <a class="btn btn-primary" role="button" th:href="@{/bookings/new(showingId=${showing.id})}">Book now</a>
+        </div>
+        <div class="mt-3">
         </div>
     </div>
 </div>

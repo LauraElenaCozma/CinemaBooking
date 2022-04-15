@@ -54,7 +54,7 @@
                 </div>
                 <ul  style="list-style: none;" class="pl-2">
                     <li th:each="actor: ${movie.actors}" >
-                        <p th:text="${actor.firstName} + ' ' + ${actor.lastName}"> </p>
+                        <a href="#" th:href="@{'/actors/' + ${actor.id}}" th:text="${actor.firstName} + ' ' + ${actor.lastName}"></a>
                     </li>
                 </ul>
             </div>
@@ -88,6 +88,59 @@
                     <p th:text="${info.rating}">code</p>
                 </div>
             </div>
+
+            <div class="row mt-3 ml-0">
+                <div>
+                    <strong>
+                        <label>Showings:</label>
+                    </strong>
+                </div>
+                <table class="table table-hover mt-2">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Hour</th>
+                        <th>Info</th>
+                        <div sec:authorize="hasRole('ADMIN')">
+                            <th>Delete</th>
+                        </div>
+                    </tr>
+                    </thead>
+                    <tr th:each="showing, stat : ${showingsPage.content}"
+                        class="table table-striped">
+                        <td th:text="${showing.id}">1</td>
+                        <td th:text="${showing.movie.title}">Product 1</td>
+                        <td th:text="${showing.date}">Reserved price</td>
+                        <td th:text="${showing.hour}">Reserved price</td>
+                        <td><a href="#" th:href="@{'/showings/' + ${showing.id}}">Info</a></td>
+                        <div sec:authorize="hasRole('ADMIN')">
+                            <td><a href="#" th:href="@{'/showings/delete/' + ${showing.id}}">Delete</a></td>
+                        </div>
+                    </tr>
+                </table>
+
+                <nav aria-label="Page navigation" class="paging mb-5">
+                    <ul class="pagination" th:if="${showingsPage.totalPages > 0}">
+                        <li class="page-item" th:if="${showingsPage.number > 0}">
+                            <a class="page-link" th:href="@{'/movies/' + ${movieId} + '?size=' + ${showingsPage.size} + '&page=' + ${showingsPage.number}}">Previous</a>
+                        </li>
+                        <th:block th:each="pageNumber : ${#numbers.sequence(1,T(java.lang.Math).min(7,showingsPage.totalPages))}">
+                            <li class="page-item" th:classappend="${pageNumber==showingsPage.number+1} ? active">
+                                <a th:class="page-link" th:classappend="${pageNumber==showingsPage.number+1} ? active" th:href="@{'/movies/' + ${movieId} + '?size=' + ${showingsPage.size} + '&page=' + ${pageNumber}}"
+                                   th:text="${pageNumber}"></a>
+                            </li>
+                            <!--                <li th:if="${pageNumber > 3}" class="page-item">-->
+                            <!--                    <a class="page-link" href="#">...</a>-->
+                            <!--                </li>-->
+                        </th:block>
+                        <li class="page-item" th:if="${showingsPage.number < (showingsPage.totalPages - 1)}">
+                            <a class="page-link" th:href="@{'/movies/' + ${movieId} + '?size=' + ${showingsPage.size} + '&page=' + ${showingsPage.number+2}}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 </div>
@@ -99,7 +152,7 @@
         </div>
 
         <div class="mt-3">
-            <a class="btn btn-primary" role="button" th:href="@{'/showings/new'}">New movie showing</a>
+            <a class="btn btn-primary" role="button" th:href="@{/showings/new(movieId=${movie.id})}">New movie showing</a>
         </div>
     </div>
 </div>

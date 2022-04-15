@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bookings</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css"/>
+    <script src="/webjars/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!--Navigation bar-->
+<div th:insert="navbar :: navbar">  </div>
+
+<div class="container">
+    <div class="panel-heading mt-4" style="background-color:#F9F9F9;">
+        <h1 class="panel-title">Current bookings</h1>
+    </div>
+    <table class="table table-hover mt-5">
+        <thead class="table-dark">
+        <tr>
+            <th>Booking Id</th>
+            <th>Customer Name</th>
+            <th>Number of reserved seats</th>
+            <th>Booking date</th>
+            <th>Info</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="booking, stat : ${bookings}"
+            class="table table-striped">
+            <td th:text="${booking.id}"></td>
+            <td th:text="${booking.user.firstName + ' ' + booking.user.lastName}"></td>
+            <td th:text="${booking.numReservedSeats}"></td>
+            <td th:text="${booking.bookingDate}">Code</td>
+            <td><a href="#" th:href="@{'/bookings/' + ${booking.id}}">Info</a></td>
+            <td><a href="#" th:href="@{'/bookings/delete/' + ${booking.id}}">Delete</a></td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6" sec:authorize="hasRole('CUSTOMER')">
+            <a class="btn btn-primary" role="button" th:href="@{'/bookings/new'}">Add booking</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

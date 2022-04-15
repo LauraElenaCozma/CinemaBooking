@@ -23,23 +23,23 @@
             <th>Delete</th>
         </tr>
         </thead>
-        <tr th:each="customer, stat : ${customers}"
+        <tr th:each="user, stat : ${users}"
             th:class="${stat.odd}? 'table-light':'table-dark'"
         >
-            <td th:text="${customer.id}">1</td>
-            <td th:text="${customer.firstName}">Product 1</td>
-            <td th:text="${customer.lastName}">Code</td>
-            <td th:text="${customer.email}">Reserved price</td>
-            <td th:text="${customer.phoneNumber}">Reserved price</td>
-            <td><a href="#" th:href="@{'/customers/' + ${customer.id}}">Info</a></td>
-            <td><a href="#" th:href="@{'/customers/delete/' + ${customer.id}}">Delete</a></td>
+            <td th:text="${user.id}">1</td>
+            <td th:text="${user.firstName}">Product 1</td>
+            <td th:text="${user.lastName}">Code</td>
+            <td th:text="${user.email}">Reserved price</td>
+            <td th:text="${user.phoneNumber}">Reserved price</td>
+            <td><a href="#" th:href="@{'/users/' + ${user.id}}">Info</a></td>
+            <td><a href="#" th:href="@{'/users/delete/' + ${user.id}}">Delete</a></td>
         </tr>
     </table>
 </div>
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <a class="btn btn-primary" role="button" th:href="@{'/customers/new'}">Add customer</a>
+            <a class="btn btn-primary" role="button" th:href="@{'/users/new'}">Add user</a>
         </div>
 <!--        <div class="col-md-6">
             <a class="btn btn-primary" role="button" th:href="@{'/participant/new'}">register</a>

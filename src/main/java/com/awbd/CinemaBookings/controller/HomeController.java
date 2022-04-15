@@ -64,6 +64,6 @@ public class HomeController {
                 .build();
         userService.save(newUser);
 
-        return "redirect:/index";
+        return "redirect:/login";
     }
 }

@@ -1,7 +1,10 @@
 package com.awbd.CinemaBookings.service;
 
 import com.awbd.CinemaBookings.domain.Booking;
+import com.awbd.CinemaBookings.domain.MovieShowing;
+import com.awbd.CinemaBookings.domain.security.User;
 import com.awbd.CinemaBookings.exception.BookingNotFoundException;
+import com.awbd.CinemaBookings.exception.NotAvailableSeatsException;
 import com.awbd.CinemaBookings.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +18,11 @@ public class BookingServiceImpl implements BookingService {
 
     BookingRepository bookingRepository;
 
-    @Autowired
-    public BookingServiceImpl(BookingRepository bookingRepository) {
+    MovieShowingService movieShowingService;
+
+    public BookingServiceImpl(BookingRepository bookingRepository, MovieShowingService movieShowingService) {
         this.bookingRepository = bookingRepository;
+        this.movieShowingService = movieShowingService;
     }
 
     @Override
@@ -28,23 +33,24 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public List<Booking> findAllByUser(User user) {
+        List<Booking> bookings = new LinkedList<>();
+        bookingRepository.findAllByUser(user).iterator().forEachRemaining(bookings::add);
+        return bookings;
+    }
+
+    @Override
     public Booking findById(Long id) {
         return bookingRepository.findById(id).orElseThrow(() -> new BookingNotFoundException(id));
     }
 
     @Override
     public Booking save(Booking booking) {
-        return bookingRepository.save(booking);
-    }
-
-    @Override
-    public Booking update(Long id, Booking updatedBooking) {
-        Optional<Booking> booking = bookingRepository.findById(id);
-        if(booking.isEmpty())
-            throw new BookingNotFoundException(id);
-        Booking newBooking = booking.get();
-        newBooking.setNumReservedSeats(updatedBooking.getNumReservedSeats());
-        return bookingRepository.save(newBooking);
+        MovieShowing movieShowing = booking.getMovieShowing();
+        Integer numAvailable = movieShowingService.getNumberOfAvailableSeats(movieShowing.getId());
+        if (numAvailable - booking.getNumReservedSeats() >= 0)
+            return bookingRepository.save(booking);
+        else throw new NotAvailableSeatsException();
     }
 
     @Override

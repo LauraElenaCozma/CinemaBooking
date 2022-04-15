@@ -1,6 +1,8 @@
 package com.awbd.CinemaBookings.domain;
 
+import com.awbd.CinemaBookings.domain.security.User;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -20,11 +22,13 @@ public class Booking {
     @Max(value = 20, message = "Maximum 20 seats reserved")
     private Integer numReservedSeats;
 
-    private Long bookingDate;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
+    private Date bookingDate;
 
     @ManyToOne
     private MovieShowing movieShowing;
 
     @ManyToOne
-    private Customer customer;
+    private User user;
 }

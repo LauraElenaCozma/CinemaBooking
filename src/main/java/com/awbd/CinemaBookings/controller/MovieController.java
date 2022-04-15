@@ -3,11 +3,17 @@ package com.awbd.CinemaBookings.controller;
 import com.awbd.CinemaBookings.domain.Actor;
 import com.awbd.CinemaBookings.domain.Info;
 import com.awbd.CinemaBookings.domain.Movie;
+import com.awbd.CinemaBookings.domain.MovieShowing;
+import com.awbd.CinemaBookings.domain.security.User;
 import com.awbd.CinemaBookings.dto.ActorFound;
 import com.awbd.CinemaBookings.service.ActorService;
 import com.awbd.CinemaBookings.service.InfoService;
 import com.awbd.CinemaBookings.service.MovieService;
+import com.awbd.CinemaBookings.service.MovieShowingService;
+import com.awbd.CinemaBookings.service.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +25,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -32,6 +39,10 @@ public class MovieController {
 
     @Autowired
     ActorService actorService;
+
+    @Autowired
+    MovieShowingService movieShowingService;
+
 
     @RequestMapping("/movies/new")
     public String createMovie(Model model) {
@@ -72,9 +83,18 @@ public class MovieController {
     }
 
     @GetMapping("/movies/{id}")
-    public String getMovie(@PathVariable String id, Model model) {
+    public String getMovie(@PathVariable String id, Model model,
+                           @RequestParam("page") Optional<Integer> page,
+                           @RequestParam("size") Optional<Integer> size) {
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(10);
+
         Movie movie = movieService.findById(Long.valueOf(id));
+        Page<MovieShowing> showingsPage = movieShowingService.findAllPagesByMovieId(Long.valueOf(id), PageRequest.of(currentPage - 1, pageSize));
+
+        model.addAttribute("showingsPage", showingsPage);
         model.addAttribute("movie", movie);
+        model.addAttribute("movieId", id);
         model.addAttribute("info", movie.getMovieDetails());
         return "movieinfo";
     }

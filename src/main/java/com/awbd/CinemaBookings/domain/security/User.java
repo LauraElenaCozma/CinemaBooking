@@ -1,8 +1,10 @@
 package com.awbd.CinemaBookings.domain.security;
 
+import com.awbd.CinemaBookings.domain.Booking;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,7 +16,7 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     private String firstName;
 
@@ -50,4 +52,7 @@ public class User {
 
     @Builder.Default
     private Boolean credentialsNotExpired = true;
+
+    @OneToMany(mappedBy = "user")
+    private List<Booking> bookings;
 }

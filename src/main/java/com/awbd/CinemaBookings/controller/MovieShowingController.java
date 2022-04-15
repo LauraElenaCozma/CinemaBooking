@@ -9,6 +9,8 @@ import com.awbd.CinemaBookings.service.VenueService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,8 +22,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/showings")
@@ -40,7 +45,7 @@ public class MovieShowingController {
     MovieService movieService;
 
     @RequestMapping("/new")
-    public String createMovieShowing(Model model) {
+    public String createMovieShowing(@RequestParam(required = false) Long movieId, Model model) {
         model.addAttribute("title", "Create new movie showing");
         log.log(Level.INFO, "Create init");
         if(!model.containsAttribute("movieShowing"))
@@ -50,6 +55,7 @@ public class MovieShowingController {
         log.log(Level.INFO, "After all movies");
         model.addAttribute("allVenues", venueService.findAll());
         log.log(Level.INFO, "All venues added");
+        model.addAttribute("movieId", movieId);
         return "showingform";
     }
 
@@ -69,12 +75,24 @@ public class MovieShowingController {
         return "redirect:/showings";
     }
 
+//    @GetMapping
+//    public ModelAndView getAllMovieShowings() {
+//        ModelAndView modelAndView = new ModelAndView("showings");
+//        List<MovieShowing> movieShowings = movieShowingService.findAll();
+//        modelAndView.addObject("movieShowings", movieShowings);
+//        return modelAndView;
+//    }
+
     @GetMapping
-    public ModelAndView getAllMovieShowings() {
-        ModelAndView modelAndView = new ModelAndView("showings");
-        List<MovieShowing> movieShowings = movieShowingService.findAll();
-        modelAndView.addObject("movieShowings", movieShowings);
-        return modelAndView;
+    public String getAllMovieShowingsPage(Model model,
+                               @RequestParam("page") Optional<Integer> page,
+                               @RequestParam("size") Optional<Integer> size) {
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(10);
+
+        Page<MovieShowing> showingsPage = movieShowingService.findAllPages(PageRequest.of(currentPage - 1, pageSize));
+        model.addAttribute("showingsPage", showingsPage);
+        return "showingspages";
     }
 
     @GetMapping("/{id}")

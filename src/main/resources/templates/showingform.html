@@ -28,12 +28,23 @@
                         <strong>
                             <label>Movie:</label>
                         </strong>
-                        <select id="movie" name="movie" th:field="*{movie}">
-                            <option
-                                    th:each="mov:${allMovies}"
-                                    th:value="${mov.id}" th:text="${mov.title}">
-                            </option>
-                        </select>
+                        <div class="p-0" th:switch="${movieId}">
+                            <select class="form-select m-0" th:case="null" id="movie" name="movie" th:field="*{movie}">
+                                <option
+                                        th:each="mov:${allMovies}"
+                                        th:value="${mov.id}"
+                                        th:text="${mov.title}">
+                                </option>
+                            </select>
+                            <select  class="form-select m-0" th:case="*" id="movie" name="movie">
+                                <option
+                                        th:each="mov:${allMovies}"
+                                        th:value="${mov.id}"
+                                        th:text="${mov.title}"
+                                        th:selected="${mov.id == movieId}">
+                                </option>
+                            </select>
+                        </div>
                     </div>
                     <div class="row mt-3">
                         <strong>
@@ -60,7 +71,7 @@
                         <strong>
                             <label for="venue">Venue: </label>
                         </strong>
-                        <select id="venue" name="venue" th:field="*{venue}">
+                        <select class="form-select" id="venue" name="venue" th:field="*{venue}">
                             <option
                                     th:each="venue:${allVenues}"
                                     th:value="${venue.id}" th:text="${venue.venueName} + ' ' + ${venue.locationName}">
