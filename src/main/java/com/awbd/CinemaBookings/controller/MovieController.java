@@ -74,7 +74,7 @@ public class MovieController {
         return "redirect:/index";
     }
 
-    @RequestMapping({"", "/", "/index"})
+    @RequestMapping({"", "/", "/index", "/movies"})
     public ModelAndView getAllMovies() {
         ModelAndView modelAndView = new ModelAndView("movies");
         List<Movie> movies = movieService.findAll();

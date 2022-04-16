@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MovieServiceImpl implements MovieService{
+public class MovieServiceImpl implements MovieService {
 
     MovieRepository movieRepository;
 
@@ -41,7 +41,7 @@ public class MovieServiceImpl implements MovieService{
     @Override
     public Movie update(Long id, Movie updatedMovie) {
         Optional<Movie> movie = movieRepository.findById(id);
-        if(movie.isEmpty())
+        if (movie.isEmpty())
             throw new MovieNotFoundException(id);
         Movie newMovie = movie.get();
         newMovie.setTitle(updatedMovie.getTitle());
@@ -56,4 +56,5 @@ public class MovieServiceImpl implements MovieService{
     public void deleteById(Long id) {
         movieRepository.deleteById(id);
     }
+
 }

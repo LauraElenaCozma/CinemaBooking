@@ -16,30 +16,40 @@
         <div class="row mt-3">
             <label class="m-lg-0 pl-0 mb-2 form-label">First Name: </label>
             <input type="text" th:field="*{firstName}" class="form-control"/>
+            <p th:if="${#fields.hasErrors('firstName')}" th:errorclass="text-danger" th:errors="*{firstName}" />
         </div>
 
         <div class="row mt-3">
             <label class="col-mt-3 col-form-label">Last Name: </label>
             <input type="text" th:field="*{lastName}" class="form-control"/>
+            <p th:if="${#fields.hasErrors('lastName')}" th:errorclass="text-danger" th:errors="*{lastName}" />
         </div>
         <div class="row mt-3">
             <label class="mb-2 form-label">Email: </label>
             <input type="email" th:field="*{email}" class="form-control"/>
+            <p th:if="${#fields.hasErrors('email')}" th:errorclass="text-danger" th:errors="*{email}" />
+            <p th:if="${exEmail} != null" th:class="text-danger" th:text="${exEmail}"></p>
         </div>
 
         <div class="row mt-3">
             <label class="mb-2 form-label">Phone number: </label>
             <input type="text" th:field="*{phoneNumber}" class="form-control"/>
+            <p th:if="${#fields.hasErrors('phoneNumber')}" th:errorclass="text-danger" th:errors="*{phoneNumber}" />
+            <p th:if="${exPhone} != null" th:class="text-danger" th:text="${exPhone}"></p>
+
         </div>
 
         <div class="row mt-3">
             <label class="mb-2 form-label">Username: </label>
             <input type="text" th:field="*{username}" class="form-control"/>
+            <p th:if="${#fields.hasErrors('username')}" th:errorclass="text-danger" th:errors="*{username}" />
+            <p th:if="${exUsername} != null" th:class="text-danger" th:text="${exUsername}"></p>
         </div>
 
         <div class="row mt-3">
             <label class="mb-2 form-label">Password: </label>
             <input type="password" th:field="*{password}" class="form-control"/>
+            <p th:if="${#fields.hasErrors('password')}" th:errorclass="text-danger" th:errors="*{password}" />
         </div>
 
         <div class="row mt-5">

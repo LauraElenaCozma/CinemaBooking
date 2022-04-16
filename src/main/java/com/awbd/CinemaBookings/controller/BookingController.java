@@ -67,6 +67,8 @@ public class BookingController {
         try {
             bookingService.save(booking);
         } catch (NotAvailableSeatsException e) {
+            attr.addFlashAttribute("org.springframework.validation.BindingResult.booking", bindingBooking);
+            attr.addFlashAttribute("booking", booking);
             attr.addFlashAttribute("seatsException", "There are not enough seats available in the venue.\n");
             attr.addFlashAttribute("seatsAvailable", numSeatsAvailable);
             if(booking.getId() != null)

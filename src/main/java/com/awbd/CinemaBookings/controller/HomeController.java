@@ -1,6 +1,9 @@
 package com.awbd.CinemaBookings.controller;
 
 import com.awbd.CinemaBookings.domain.security.User;
+import com.awbd.CinemaBookings.exception.EmailNotUniqueException;
+import com.awbd.CinemaBookings.exception.PhoneNotUniqueException;
+import com.awbd.CinemaBookings.exception.UsernameNotUniqueException;
 import com.awbd.CinemaBookings.service.security.AuthorityService;
 import com.awbd.CinemaBookings.service.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +29,19 @@ public class HomeController {
 
     @GetMapping("/login")
     public String showLogInForm() {
+
         return "login";
     }
 
+    @GetMapping("/login-error")
+    public String loginError() {
+
+        return "loginerror";
+    }
 
     @GetMapping("/accessDenied")
     public String accessDenied() {
+
         return "access_denied";
     }
 
@@ -51,6 +61,7 @@ public class HomeController {
             attr.addFlashAttribute("user", user);
             return "redirect:/register";
         }
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         User newUser = User.builder()
@@ -62,7 +73,26 @@ public class HomeController {
                 .password(encodedPassword)
                 .authority(authorityService.getByRole("ROLE_CUSTOMER"))
                 .build();
-        userService.save(newUser);
+        try {
+            userService.save(newUser);
+        } catch (PhoneNotUniqueException e) {
+            attr.addFlashAttribute("exPhone", e.getMessage());
+            attr.addFlashAttribute("org.springframework.validation.BindingResult.user", bindingResult);
+            attr.addFlashAttribute("user", user);
+            return "redirect:/register";
+        } catch (EmailNotUniqueException e) {
+            attr.addFlashAttribute("org.springframework.validation.BindingResult.user", bindingResult);
+            attr.addFlashAttribute("user", user);
+            attr.addFlashAttribute("exEmail", e.getMessage());
+            return "redirect:/register";
+        } catch (UsernameNotUniqueException e) {
+            attr.addFlashAttribute("org.springframework.validation.BindingResult.user", bindingResult);
+            attr.addFlashAttribute("user", user);
+            attr.addFlashAttribute("exUsername", e.getMessage());
+            if(user.getId() != null)
+                return "redirect:/users/update/" + user.getId().toString();
+            return "redirect:/register";
+        }
 
         return "redirect:/login";
     }

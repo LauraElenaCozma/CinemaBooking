@@ -31,6 +31,10 @@ public class DataLoader implements CommandLineRunner {
                     authorityRepository.save(Authority.builder().role("ROLE_CUSTOMER").build());
             User admin = User.builder()
                     .username("admin")
+                    .firstName("Maia")
+                    .lastName("Popescu")
+                    .email("maiapop@gmail.com")
+                    .phoneNumber("0723919229")
                     .password(passwordEncoder.encode("1234"))
                     .authority(adminRole)
                     .build();

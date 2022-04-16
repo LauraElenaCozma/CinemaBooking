@@ -38,6 +38,8 @@ public class SecurityJdbcConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/movies").hasAnyRole("CUSTOMER","ADMIN")
                 .antMatchers("/movies/{^[\\\\d]$}").hasAnyRole("CUSTOMER","ADMIN")
                 .antMatchers("/movies/**").hasRole("ADMIN")
+                .antMatchers("/").hasAnyRole("CUSTOMER", "ADMIN")
+                .antMatchers("/index").hasAnyRole("CUSTOMER", "ADMIN")
                 .antMatchers("/showings").hasAnyRole("CUSTOMER","ADMIN")
                 .antMatchers("/showings/{^[\\\\d]$}").hasAnyRole("CUSTOMER","ADMIN")
                 .antMatchers("/showings/**").hasAnyRole("ADMIN")
@@ -59,6 +61,7 @@ public class SecurityJdbcConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().loginPage("/login")
                 .loginProcessingUrl("/authUser")
+                .failureUrl("/login?error")
                 .permitAll()
                 .and()
                 .exceptionHandling().accessDeniedPage("/accessDenied");

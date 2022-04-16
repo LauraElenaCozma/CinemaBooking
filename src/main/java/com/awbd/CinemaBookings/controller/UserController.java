@@ -5,8 +5,10 @@ import com.awbd.CinemaBookings.service.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -25,7 +27,14 @@ public class UserController {
     }
 
     @PostMapping
-    public String saveOrUpdateUser(@ModelAttribute User user) {
+    public String saveOrUpdateUser(@ModelAttribute User user) {//, BindingResult binding, RedirectAttributes attr) {
+//        if(binding.hasErrors()) {
+//            attr.addFlashAttribute("org.springframework.validation.BindingResult.user", binding);
+//            attr.addFlashAttribute("user", user);
+//            if(user.getId() != null)
+//                return "redirect:/users/update/" + user.getId().toString();
+//            return "redirect:/movies/new";
+//        }
         User savedUser = userService.save(user);
         return "redirect:/users";
     }
