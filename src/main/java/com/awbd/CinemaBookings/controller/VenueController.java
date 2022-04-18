@@ -3,6 +3,7 @@ package com.awbd.CinemaBookings.controller;
 import com.awbd.CinemaBookings.domain.Actor;
 import com.awbd.CinemaBookings.domain.Venue;
 import com.awbd.CinemaBookings.service.VenueService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/venues")
+@Slf4j
 public class VenueController {
 
     @Autowired
@@ -23,6 +25,7 @@ public class VenueController {
 
     @RequestMapping("/new")
     public String createVenue(Model model) {
+        log.info("Create venue get method");
         if(!model.containsAttribute("venue"))
             model.addAttribute("venue", new Venue());
         return "venueform";
@@ -31,6 +34,7 @@ public class VenueController {
     @PostMapping
     public String saveOrUpdateVenue(@Valid @ModelAttribute("venue") Venue venue, BindingResult bindingResult,
                                     RedirectAttributes attr) {
+        log.info("Create venue post method");
         if(bindingResult.hasErrors()) {
             attr.addFlashAttribute("org.springframework.validation.BindingResult.venue", bindingResult);
             attr.addFlashAttribute("venue", venue);
@@ -44,6 +48,7 @@ public class VenueController {
 
     @GetMapping
     public ModelAndView getAllVenues() {
+        log.info("Get all venues");
         ModelAndView modelAndView = new ModelAndView("venues");
         List<Venue> venues = venueService.findAll();
         modelAndView.addObject("venues", venues);
@@ -52,18 +57,21 @@ public class VenueController {
 
     @GetMapping("/{id}")
     public String getVenue(@PathVariable String id, Model model) {
+        log.info("Get venue by id");
         model.addAttribute("venue", venueService.findById(Long.valueOf(id)));
         return "venueinfo";
     }
 
     @RequestMapping("/delete/{id}")
     public String deleteVenue(@PathVariable Long id) {
+        log.info("Delete venue by id");
         venueService.deleteById(id);
         return "redirect:/venues";
     }
 
     @RequestMapping("/update/{id}")
     public String updateVenue(@PathVariable String id, Model model) {
+        log.info("Update venue");
         Venue venue = venueService.findById(Long.valueOf(id));
         if(!model.containsAttribute("venue"))
             model.addAttribute("venue", venue);

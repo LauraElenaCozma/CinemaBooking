@@ -6,6 +6,7 @@ import com.awbd.CinemaBookings.exception.PhoneNotUniqueException;
 import com.awbd.CinemaBookings.exception.UsernameNotUniqueException;
 import com.awbd.CinemaBookings.service.security.AuthorityService;
 import com.awbd.CinemaBookings.service.security.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 @Controller
+@Slf4j
 public class HomeController {
 
     @Autowired
@@ -29,24 +31,25 @@ public class HomeController {
 
     @GetMapping("/login")
     public String showLogInForm() {
-
+        log.info("Login");
         return "login";
     }
 
     @GetMapping("/login-error")
     public String loginError() {
-
+        log.info("Login error");
         return "loginerror";
     }
 
     @GetMapping("/accessDenied")
     public String accessDenied() {
-
+        log.info("Access denied");
         return "accessdenied";
     }
 
     @GetMapping("/register")
     public String register(Model model){
+        log.info("Register");
         if(!model.containsAttribute("user"))
             model.addAttribute("user", new User());
         return "registerform";

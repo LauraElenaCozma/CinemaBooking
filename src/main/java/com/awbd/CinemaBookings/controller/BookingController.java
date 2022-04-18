@@ -9,6 +9,7 @@ import com.awbd.CinemaBookings.service.BookingService;
 import com.awbd.CinemaBookings.service.MovieShowingService;
 import com.awbd.CinemaBookings.service.security.AuthorityService;
 import com.awbd.CinemaBookings.service.security.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
+@Slf4j
 public class BookingController {
 
     @Autowired
@@ -42,6 +44,7 @@ public class BookingController {
 
     @RequestMapping("/bookings/new")
     public String createBooking(@RequestParam(required = false) Long showingId, Model model) {
+        log.info("Create booking get method");
         if(!model.containsAttribute("booking"))
             model.addAttribute("booking", new Booking());
         model.addAttribute("showingsAll", movieShowingService.findAll());
@@ -53,6 +56,7 @@ public class BookingController {
     @PostMapping("/bookings")
     public String saveOrUpdateBooking(@Valid @ModelAttribute("booking") Booking booking, BindingResult bindingBooking,
                                     RedirectAttributes attr) {
+        log.info("Create booking post method");
         if(bindingBooking.hasErrors()) {
             attr.addFlashAttribute("org.springframework.validation.BindingResult.booking", bindingBooking);
             attr.addFlashAttribute("booking", booking);
@@ -82,6 +86,7 @@ public class BookingController {
 
     @RequestMapping("/bookings")
     public ModelAndView getAllBookings() {
+        log.info("Get all bookings");
         ModelAndView modelAndView = new ModelAndView("bookings");
         List<Booking> bookings = bookingService.findAll();
         modelAndView.addObject("bookings", bookings);
@@ -90,6 +95,7 @@ public class BookingController {
 
     @RequestMapping("/bookings/myBookings")
     public ModelAndView getMyBookings() {
+        log.info("Get my bookings");
         ModelAndView modelAndView = new ModelAndView("bookings");
         User currentUser = userService.getCurrentUser();
         List<Booking> bookings = bookingService.findAllByUser(currentUser);
@@ -99,6 +105,7 @@ public class BookingController {
 
     @GetMapping("/bookings/{id}")
     public String getBooking(@PathVariable String id, Model model) {
+        log.info("Get booking by id");
         Booking booking = bookingService.findById(Long.valueOf(id));
         model.addAttribute("booking", booking);
         return "bookinginfo";
@@ -106,6 +113,7 @@ public class BookingController {
 
     @RequestMapping("/bookings/delete/{id}")
     public String deleteBooking(@PathVariable Long id) {
+        log.info("Delete booking");
         bookingService.deleteById(id);
         User currentUser = userService.getCurrentUser();
         if(currentUser.getAuthorities().contains(authorityService.getByRole("ROLE_CUSTOMER")))
@@ -115,6 +123,7 @@ public class BookingController {
 
     @RequestMapping("/bookings/update/{id}")
     public String updateBooking(@PathVariable String id, Model model) {
+        log.info("Update booking");
         Booking booking = bookingService.findById(Long.valueOf(id));
         if(!model.containsAttribute("booking"))
             model.addAttribute("booking", booking);

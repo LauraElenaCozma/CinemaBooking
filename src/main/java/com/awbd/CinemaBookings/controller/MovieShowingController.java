@@ -34,8 +34,6 @@ import java.util.stream.IntStream;
 @Slf4j
 public class MovieShowingController {
 
-    private static final Logger log = Logger.getLogger(MovieShowingController.class.getName());
-
     @Autowired
     MovieShowingService movieShowingService;
 
@@ -68,14 +66,14 @@ public class MovieShowingController {
     public String saveOrUpdateMovieShowing(@Valid @ModelAttribute("movieShowing") MovieShowing movieShowing, BindingResult bindingResult,
                                            RedirectAttributes attr) {
         if (bindingResult.hasErrors()) {
-            log.log(Level.INFO, "Binding result has errors");
+            log.info("Binding result has errors");
             attr.addFlashAttribute("org.springframework.validation.BindingResult.movieShowing", bindingResult);
             attr.addFlashAttribute("movieShowing", movieShowing);
             if (movieShowing.getId() != null)
                 return "redirect:/showings/update/" + movieShowing.getId().toString();
             return "redirect:/showings/new";
         }
-        log.log(Level.INFO, "Binding result doesn't have errors");
+        log.info("Binding result doesn't have errors");
         movieShowingService.save(movieShowing);
         return "redirect:/showings";
     }
@@ -92,9 +90,9 @@ public class MovieShowingController {
     public String getAllMovieShowingsPage(Model model,
                                @RequestParam("page") Optional<Integer> page,
                                @RequestParam("size") Optional<Integer> size) {
+        log.info("Get all movie showings by pages");
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
-
         Page<MovieShowing> showingsPage = movieShowingService.findAllPages(PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("showingsPage", showingsPage);
         return "showingspages";
@@ -102,12 +100,14 @@ public class MovieShowingController {
 
     @GetMapping("/{id}")
     public String getMovieShowing(@PathVariable String id, Model model) {
+        log.info("Get movie showing by id");
         model.addAttribute("showing", movieShowingService.findById(Long.valueOf(id)));
         return "showinginfo";
     }
 
     @RequestMapping("/delete/{id}")
     public String deleteMovieShowing(@PathVariable Long id) {
+        log.info("Delete movie showing");
         movieShowingService.deleteById(id);
         return "redirect:/showings";
     }

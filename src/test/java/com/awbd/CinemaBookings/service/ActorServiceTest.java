@@ -26,11 +26,6 @@ public class ActorServiceTest {
     @Mock
     private ActorRepository actorRepository;
 
-    @Before
-    public void setUp() throws Exception {
-        actorService = new ActorServiceImpl(actorRepository);
-    }
-
     @Test
     void createActorHappyFlow() {
         Actor actor = Actor.builder()

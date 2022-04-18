@@ -1,8 +1,6 @@
 package com.awbd.CinemaBookings.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -13,6 +11,9 @@ import javax.validation.constraints.Size;
 import java.util.List;
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Venue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

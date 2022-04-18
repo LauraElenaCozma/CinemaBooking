@@ -27,7 +27,7 @@ public class Movie {
     private String title;
 
     @NotNull(message = "The duration must not be null!")
-    @Min(value = 0, message = "The duration must be a positive value!")
+    @Min(value = 10, message = "The duration must be greater than 10!")
     private Long duration;
 
     @Enumerated(EnumType.STRING)

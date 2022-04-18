@@ -35,6 +35,9 @@ public class Actor {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "actors")
+    @ManyToMany
+    @JoinTable(name="movie_actor",
+            joinColumns = @JoinColumn(name = "actor_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name="movie_id", referencedColumnName = "id"))
     private List<Movie> movies;
 }

@@ -11,6 +11,7 @@ import com.awbd.CinemaBookings.service.InfoService;
 import com.awbd.CinemaBookings.service.MovieService;
 import com.awbd.CinemaBookings.service.MovieShowingService;
 import com.awbd.CinemaBookings.service.security.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
+@Slf4j
 public class MovieController {
 
     @Autowired
@@ -46,6 +48,7 @@ public class MovieController {
 
     @RequestMapping("/movies/new")
     public String createMovie(Model model) {
+        log.info("Create movie get method");
         if(!model.containsAttribute("movie"))
             model.addAttribute("movie", new Movie());
         if(!model.containsAttribute("info"))
@@ -58,6 +61,7 @@ public class MovieController {
     public String saveOrUpdateMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingMovie,
                                     @Valid @ModelAttribute("info") Info info, BindingResult bindingInfo,
                                     RedirectAttributes attr) {
+        log.info("Create movie post method");
         if(bindingMovie.hasErrors() || bindingInfo.hasErrors()) {
             attr.addFlashAttribute("org.springframework.validation.BindingResult.movie", bindingMovie);
             attr.addFlashAttribute("movie", movie);
@@ -76,6 +80,8 @@ public class MovieController {
 
     @RequestMapping({"", "/", "/index", "/movies"})
     public ModelAndView getAllMovies() {
+        log.info("Get all movies");
+
         ModelAndView modelAndView = new ModelAndView("movies");
         List<Movie> movies = movieService.findAll();
         modelAndView.addObject("movies", movies);
@@ -86,6 +92,8 @@ public class MovieController {
     public String getMovie(@PathVariable String id, Model model,
                            @RequestParam("page") Optional<Integer> page,
                            @RequestParam("size") Optional<Integer> size) {
+        log.info("Get movie by id");
+
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
 
@@ -101,12 +109,14 @@ public class MovieController {
 
     @RequestMapping("/movies/delete/{id}")
     public String deleteMovie(@PathVariable Long id) {
+        log.info("Delete movie");
         movieService.deleteById(id);
         return "redirect:/index";
     }
 
     @RequestMapping(value = "/movies/update/{id}", method = RequestMethod.GET)
     public String updateMovie(@PathVariable String id, Model model) {
+        log.info("Update movie");
         Movie movie = movieService.findById(Long.valueOf(id));
         List<Actor> movieActors = movie.getActors();
         List<Actor> allActors = actorService.findAll();
