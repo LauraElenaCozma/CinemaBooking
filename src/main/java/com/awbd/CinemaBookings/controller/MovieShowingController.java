@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,13 +52,13 @@ public class MovieShowingController {
     public String createMovieShowing(@RequestParam(required = false) Long movieId, Model model) {
         model.addAttribute("title", "Create new movie showing");
         log.info("Create init");
-        if(!model.containsAttribute("movieShowing"))
+        if (!model.containsAttribute("movieShowing"))
             model.addAttribute("movieShowing", new MovieShowing());
-        log.info( "After movie showing");
+        log.info("After movie showing");
         model.addAttribute("allMovies", movieService.findAll());
-        log.info( "After all movies");
+        log.info("After all movies");
         model.addAttribute("allVenues", venueService.findAll());
-        log.info( "All venues added");
+        log.info("All venues added");
         model.addAttribute("movieId", movieId);
         return "showingform";
     }
@@ -88,12 +89,13 @@ public class MovieShowingController {
 
     @GetMapping
     public String getAllMovieShowingsPage(Model model,
-                               @RequestParam("page") Optional<Integer> page,
-                               @RequestParam("size") Optional<Integer> size) {
+                                          @RequestParam("page") Optional<Integer> page,
+                                          @RequestParam("size") Optional<Integer> size,
+                                          @RequestParam(defaultValue = "id") String sortBy) {
         log.info("Get all movie showings by pages");
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
-        Page<MovieShowing> showingsPage = movieShowingService.findAllPages(PageRequest.of(currentPage - 1, pageSize));
+        Page<MovieShowing> showingsPage = movieShowingService.findAllPages(PageRequest.of(currentPage - 1, pageSize, Sort.by(sortBy)));
         model.addAttribute("showingsPage", showingsPage);
         return "showingspages";
     }
@@ -116,7 +118,7 @@ public class MovieShowingController {
     public String updateMovieShowing(@PathVariable String id, Model model) {
         MovieShowing movieShowing = movieShowingService.findById(Long.valueOf(id));
         model.addAttribute("title", "Update movie showing");
-        if(!model.containsAttribute("movieShowing"))
+        if (!model.containsAttribute("movieShowing"))
             model.addAttribute("movieShowing", movieShowing);
         model.addAttribute("allMovies", movieService.findAll());
         model.addAttribute("allVenues", venueService.findAll());
