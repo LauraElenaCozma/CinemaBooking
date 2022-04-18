@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -27,18 +28,18 @@ public class UserService {
 
     public User save(User user) {
         Optional<User> userEmail = userRepository.findByEmail(user.getEmail());
-        if(userEmail.isPresent() && user.getId() != userEmail.get().getId()) {
+        if(userEmail.isPresent() && !Objects.equals(user.getId(), userEmail.get().getId())) {
             // an user with the same email already exists;
             // 1. the saved user did not changed the email => userEmail.id = user.id
             // 2. the saved user changed the email => another user was found with this email
             throw new EmailNotUniqueException(user.getEmail());
         }
         Optional<User> userPhoneNumber = userRepository.findByPhoneNumber(user.getPhoneNumber());
-        if(userPhoneNumber.isPresent() && user.getId() != userPhoneNumber.get().getId())
+        if(userPhoneNumber.isPresent() && !Objects.equals(user.getId(), userPhoneNumber.get().getId()))
             throw new PhoneNotUniqueException(user.getPhoneNumber());
 
         Optional<User> userUsername = userRepository.findByUsername(user.getUsername());
-        if(userUsername.isPresent() && user.getId() != userUsername.get().getId())
+        if(userUsername.isPresent() && !Objects.equals(user.getId(), userUsername.get().getId()))
             throw new UsernameNotUniqueException(user.getUsername());
 
         return userRepository.save(user);

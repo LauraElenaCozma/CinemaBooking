@@ -87,7 +87,7 @@ public class MovieController {
                            @RequestParam("page") Optional<Integer> page,
                            @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
-        int pageSize = size.orElse(10);
+        int pageSize = size.orElse(5);
 
         Movie movie = movieService.findById(Long.valueOf(id));
         Page<MovieShowing> showingsPage = movieShowingService.findAllPagesByMovieId(Long.valueOf(id), PageRequest.of(currentPage - 1, pageSize));
@@ -105,7 +105,7 @@ public class MovieController {
         return "redirect:/index";
     }
 
-    @RequestMapping("/movies/update/{id}")
+    @RequestMapping(value = "/movies/update/{id}", method = RequestMethod.GET)
     public String updateMovie(@PathVariable String id, Model model) {
         Movie movie = movieService.findById(Long.valueOf(id));
         List<Actor> movieActors = movie.getActors();

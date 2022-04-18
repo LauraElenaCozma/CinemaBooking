@@ -33,9 +33,6 @@ public class Actor {
     @NotNull(message = "Date of birth must not be empty!")
     private java.util.Date dateOfBirth;
 
-    @Size(max = 50, message = "Place of birth must not be longer than 50 characters")
-    private String placeOfBirth;
-
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "actors")

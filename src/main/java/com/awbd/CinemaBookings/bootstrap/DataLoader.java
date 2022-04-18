@@ -5,6 +5,7 @@ import com.awbd.CinemaBookings.domain.security.User;
 import com.awbd.CinemaBookings.repository.security.AuthorityRepository;
 import com.awbd.CinemaBookings.repository.security.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -13,8 +14,11 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class DataLoader implements CommandLineRunner {
 
+    @Autowired
     private AuthorityRepository authorityRepository;
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
 

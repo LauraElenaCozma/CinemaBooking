@@ -7,6 +7,7 @@ import com.awbd.CinemaBookings.service.MovieService;
 import com.awbd.CinemaBookings.service.MovieShowingService;
 import com.awbd.CinemaBookings.service.VenueService;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.data.domain.Page;
@@ -30,7 +31,7 @@ import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/showings")
-@Log
+@Slf4j
 public class MovieShowingController {
 
     private static final Logger log = Logger.getLogger(MovieShowingController.class.getName());
@@ -44,17 +45,21 @@ public class MovieShowingController {
     @Autowired
     MovieService movieService;
 
+    public void setMovieShowingService(MovieShowingService movieShowingService) {
+        this.movieShowingService = movieShowingService;
+    }
+
     @RequestMapping("/new")
     public String createMovieShowing(@RequestParam(required = false) Long movieId, Model model) {
         model.addAttribute("title", "Create new movie showing");
-        log.log(Level.INFO, "Create init");
+        log.info("Create init");
         if(!model.containsAttribute("movieShowing"))
             model.addAttribute("movieShowing", new MovieShowing());
-        log.log(Level.INFO, "After movie showing");
+        log.info( "After movie showing");
         model.addAttribute("allMovies", movieService.findAll());
-        log.log(Level.INFO, "After all movies");
+        log.info( "After all movies");
         model.addAttribute("allVenues", venueService.findAll());
-        log.log(Level.INFO, "All venues added");
+        log.info( "All venues added");
         model.addAttribute("movieId", movieId);
         return "showingform";
     }

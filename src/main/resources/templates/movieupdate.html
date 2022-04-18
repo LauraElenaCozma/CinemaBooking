@@ -102,9 +102,9 @@
                             <input type="number" class="form-control" th:field="*{rating}"/>
                             <p th:if="${#fields.hasErrors('rating')}" th:errorclass="error" th:errors="*{rating}" />
                         </div>
-                        <div class="row">
+                        <div class="row mt-4 mb-3">
                             <div class="col-mt-7 ml-0">
-                                <button type="submit" class="btn btn-primary">Create</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </div>
                     </div>

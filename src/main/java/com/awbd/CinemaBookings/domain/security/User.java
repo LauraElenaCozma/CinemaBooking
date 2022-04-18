@@ -67,6 +67,6 @@ public class User {
     @Builder.Default
     private Boolean credentialsNotExpired = true;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Booking> bookings;
 }

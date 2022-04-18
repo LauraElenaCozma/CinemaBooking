@@ -45,6 +45,6 @@ public class MovieShowing {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "movieShowing")
+    @OneToMany(mappedBy = "movieShowing", cascade = CascadeType.ALL)
     private List<Booking> bookings;
 }

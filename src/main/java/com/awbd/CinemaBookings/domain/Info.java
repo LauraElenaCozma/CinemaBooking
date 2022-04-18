@@ -1,8 +1,6 @@
 package com.awbd.CinemaBookings.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -10,12 +8,16 @@ import java.util.List;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Info {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "The description must be completed")
     @Size(max = 300, message = "The description must not be longer than 300 characters")
     private String description;
 

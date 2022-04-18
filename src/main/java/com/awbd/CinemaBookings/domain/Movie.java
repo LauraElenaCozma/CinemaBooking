@@ -33,7 +33,7 @@ public class Movie {
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
-    @OneToOne(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "movie", cascade = CascadeType.ALL)
     private Info movieDetails;
 
     @ManyToMany//(fetch = FetchType.EAGER)
@@ -46,6 +46,7 @@ public class Movie {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List<MovieShowing> movieShowings;
+
 }
