@@ -38,9 +38,10 @@ public class ActorController {
         if (bindingResult.hasErrors()) {
             attr.addFlashAttribute("org.springframework.validation.BindingResult.actor", bindingResult);
             attr.addFlashAttribute("actor", actor);
-            if(actor.getId() != null)
-                return "redirect:/actors/update/" + actor.getId().toString();
-            return "redirect:/actors/new";
+            return "actorform";
+//            if(actor.getId() != null)
+//                return "redirect:/actors/update/" + actor.getId().toString();
+//            return "redirect:/actors/new";
         }
         actorService.save(actor);
         return "redirect:/actors";

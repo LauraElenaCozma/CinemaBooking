@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Slf4j
+@ActiveProfiles("h2")
 public class ActorControllerTest {
 
     @Autowired
@@ -42,7 +44,14 @@ public class ActorControllerTest {
     void showByIdNoAuth() throws Exception {
         mockMvc.perform(get("/actors/{id}", "1"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login"));
+                .andExpect(redirectedUrl("http://localhost/login"));
+    }
+
+    @Test
+    @WithMockUser(username = "customer", password = "1234", roles = "CUSTOMER")
+    void showByIdBadRequest() throws Exception {
+        mockMvc.perform(get("/actors/{id}", "id"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -91,4 +100,23 @@ public class ActorControllerTest {
                 .andExpect(redirectedUrl("/actors"));
     }
 
+    @Test
+    @WithMockUser(username = "admin", password = "1234", roles = "ADMIN")
+    void addNewActorFailure() throws Exception {
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd").parse("1974-02-12");
+        } catch (ParseException e) {
+            log.error("Parsing date error");
+        }
+        Actor actor = Actor.builder()
+                .firstName("")
+                .lastName("Last")
+                .dateOfBirth(date).build();
+        mockMvc.perform(post("/actors")
+                .flashAttr("actor", actor))
+                .andExpect(model().attributeHasFieldErrors("actor", "firstName"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("actorform"));
+    }
 }

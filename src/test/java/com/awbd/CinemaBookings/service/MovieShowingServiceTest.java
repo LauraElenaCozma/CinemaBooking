@@ -1,42 +1,58 @@
 package com.awbd.CinemaBookings.service;
 
 import com.awbd.CinemaBookings.domain.MovieShowing;
-import com.awbd.CinemaBookings.repository.MovieShowingRepository;
+import com.awbd.CinemaBookings.exception.MovieShowingNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles("h2")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
 public class MovieShowingServiceTest {
 
     @Autowired
     MovieShowingServiceImpl movieShowingService;
 
-//    @MockBean
-//    MovieShowingRepository movieShowingRepository;
+    @Test
+    @Order(1)
+    public void getById() {
+        log.info("Get by id movie showing...");
+        Long id = 1L;
+        MovieShowing movieShowing = movieShowingService.findById(id);
+        assertNotNull(movieShowing);
+        assertEquals(40D, movieShowing.getPrice());
+    }
 
     @Test
+    @Order(2)
+    public void updateMovieShowing() {
+        log.info("Update movie showing...");
+        Long id = 1L;
+        MovieShowing movieShowing = movieShowingService.findById(id);
+        movieShowing.setPrice(100D);
+        movieShowingService.save(movieShowing);
+        MovieShowing newMovieShowing = movieShowingService.findById(id);
+        assertEquals(100D, movieShowing.getPrice());
+    }
+
+    @Test
+    @Order(3)
     public void deleteById() {
         log.info("Delete movie showing test... ");
         Long id = 1L;
         movieShowingService.deleteById(id);
-//        doNothing().when(movieShowingRepository).deleteById(id);
-        MovieShowing movieShowing = movieShowingService.findById(id);
-        assertNull(movieShowing);
+        assertThrows(MovieShowingNotFoundException.class, () -> movieShowingService.findById(id));
     }
 }

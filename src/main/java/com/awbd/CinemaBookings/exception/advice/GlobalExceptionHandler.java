@@ -19,4 +19,12 @@ public class GlobalExceptionHandler {
         modelAndView.addObject("message", exception.getMessage());
         return modelAndView;
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({NumberFormatException.class})
+    public ModelAndView handleNotFound(NumberFormatException exception) {
+        ModelAndView modelAndView = new ModelAndView("error_default");
+        modelAndView.addObject("message", exception.getMessage());
+        return modelAndView;
+    }
 }
