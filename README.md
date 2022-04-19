@@ -5,7 +5,7 @@
 
 ### Spring Boot features:
 - Authentication using Spring Security with JDBC
-- 2 databases: MySql and H2
+- 2 databases and 2 profiles: MySql and H2
 - Beans defined for services, repositories, controller, etc.
 - All types of relationships: `@OneToOne`,  `@OneToMany`,  `@ManyToOne`, `@ManyToMany`
 - Validation for models
