@@ -28,8 +28,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="movie, stat : ${movies}"
-            class="table table-striped">
+        <tr th:each="movie, stat : ${movies}">
             <td th:text="${movie.id}">1</td>
             <td th:text="${movie.title}">Product 1</td>
             <td th:text="${movie.duration}">Code</td>

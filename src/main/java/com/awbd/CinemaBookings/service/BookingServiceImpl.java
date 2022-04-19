@@ -46,9 +46,16 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking save(Booking booking) {
+        Integer alreadyBooked = 0;
+        if(booking.getId() != null) {
+            Optional<Booking> bookingOpt = bookingRepository.findById(booking.getId());
+            if(bookingOpt.isEmpty())
+                throw  new BookingNotFoundException(booking.getId());
+            alreadyBooked = bookingOpt.get().getNumReservedSeats();
+        }
         MovieShowing movieShowing = booking.getMovieShowing();
         Integer numAvailable = movieShowingService.getNumberOfAvailableSeats(movieShowing.getId());
-        if (numAvailable - booking.getNumReservedSeats() >= 0)
+        if (numAvailable + alreadyBooked - booking.getNumReservedSeats() >= 0)
             return bookingRepository.save(booking);
         else throw new NotAvailableSeatsException();
     }

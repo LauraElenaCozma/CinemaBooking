@@ -36,7 +36,8 @@ public class UserController {
     @RequestMapping("/new")
     public String createUser(Model model) {
         log.info("Create user get method");
-        model.addAttribute("user", new User());
+        if(!model.containsAttribute("user"))
+            model.addAttribute("user", new User());
         return "userform";
     }
 

@@ -15,6 +15,7 @@
     <div class="panel-heading mt-4" style="background-color:#F9F9F9;">
         <h1 class="panel-title">Programme</h1>
     </div>
+
     <table class="table table-hover mt-5">
         <thead class="table-dark">
         <tr>
@@ -28,8 +29,7 @@
             </div>
         </tr>
         </thead>
-        <tr th:each="showing, stat : ${movieShowings}"
-            class="table table-striped">
+        <tr th:each="showing, stat : ${movieShowings}">
             <td th:text="${showing.id}">1</td>
             <td th:text="${showing.movie.title}">Product 1</td>
             <td th:text="${showing.date}">Reserved price</td>

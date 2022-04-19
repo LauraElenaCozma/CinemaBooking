@@ -26,8 +26,7 @@
             </div>
         </tr>
         </thead>
-        <tr th:each="venue, stat : ${venues}"
-            class="table table-striped">
+        <tr th:each="venue, stat : ${venues}">
             <td th:text="${venue.id}"></td>
             <td th:text="${venue.venueName}"></td>
             <td th:text="${venue.locationName}"></td>

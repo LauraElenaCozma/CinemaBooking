@@ -26,8 +26,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="booking, stat : ${bookings}"
-            class="table table-striped">
+        <tr th:each="booking, stat : ${bookings}">
             <td th:text="${booking.id}"></td>
             <td th:text="${booking.user.firstName + ' ' + booking.user.lastName}"></td>
             <td th:text="${booking.numReservedSeats}"></td>

@@ -108,8 +108,7 @@
                         </div>
                     </tr>
                     </thead>
-                    <tr th:each="showing, stat : ${showingsPage.content}"
-                        class="table table-striped">
+                    <tr th:each="showing, stat : ${showingsPage.content}">
                         <td th:text="${showing.id}">1</td>
                         <td th:text="${showing.movie.title}">Product 1</td>
                         <td th:text="${showing.date}">Reserved price</td>
