@@ -97,6 +97,8 @@ public class MovieShowingController {
         int pageSize = size.orElse(10);
         Page<MovieShowing> showingsPage = movieShowingService.findAllPages(PageRequest.of(currentPage - 1, pageSize, Sort.by(sortBy)));
         model.addAttribute("showingsPage", showingsPage);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("currentPage", currentPage);
         return "showingspages";
     }
 

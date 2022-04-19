@@ -44,7 +44,7 @@ public class MovieShowingServiceTest {
         movieShowing.setPrice(100D);
         movieShowingService.save(movieShowing);
         MovieShowing newMovieShowing = movieShowingService.findById(id);
-        assertEquals(100D, movieShowing.getPrice());
+        assertEquals(100D, newMovieShowing.getPrice());
     }
 
     @Test

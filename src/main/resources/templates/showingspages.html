@@ -19,10 +19,10 @@
     <table class="table table-hover mt-5">
         <thead class="table-dark">
         <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Date</th>
-            <th>Hour</th>
+            <th> <a th:href="@{'/showings?page=' + ${currentPage} + '&sortBy=id'}">ID</a></th>
+            <th> <a th:href="@{'/showings?page=' + ${currentPage} + '&sortBy=movie.title'}">Title</a></th>
+            <th> <a th:href="@{'/showings?page=' + ${currentPage} + '&sortBy=date'}">Date</a></th>
+            <th> <a th:href="@{'/showings?page=' + ${currentPage} + '&sortBy=hour'}">Hour</a></th>
             <th>Info</th>
             <div sec:authorize="hasRole('ADMIN')">
                 <th>Delete</th>
@@ -43,19 +43,16 @@
     <nav aria-label="Page navigation" class="paging">
         <ul class="pagination" th:if="${showingsPage.totalPages > 0}">
             <li class="page-item" th:if="${showingsPage.number > 0}">
-                <a class="page-link" th:href="@{/showings(size=${showingsPage.size}, page=${showingsPage.number})}">Previous</a>
+                <a class="page-link" th:href="@{/showings(size=${showingsPage.size}, page=${showingsPage.number}, sortBy=${sortBy})}">Previous</a>
             </li>
             <th:block th:each="pageNumber : ${#numbers.sequence(1,T(java.lang.Math).min(7,showingsPage.totalPages))}">
                 <li class="page-item" th:classappend="${pageNumber==showingsPage.number+1} ? active">
-                    <a th:class="page-link" th:classappend="${pageNumber==showingsPage.number+1} ? active" th:href="@{/showings(size=${showingsPage.size}, page=${pageNumber})}"
+                    <a th:class="page-link" th:classappend="${pageNumber==showingsPage.number+1} ? active" th:href="@{/showings(size=${showingsPage.size}, page=${pageNumber}, sortBy=${sortBy})}"
                        th:text="${pageNumber}"></a>
                 </li>
-<!--                <li th:if="${pageNumber > 3}" class="page-item">-->
-<!--                    <a class="page-link" href="#">...</a>-->
-<!--                </li>-->
             </th:block>
             <li class="page-item" th:if="${showingsPage.number < (showingsPage.totalPages - 1)}">
-                <a class="page-link" th:href="@{/showings(size=${showingsPage.size}, page=${showingsPage.number+2})}">Next</a>
+                <a class="page-link" th:href="@{/showings(size=${showingsPage.size}, page=${showingsPage.number+2}, sortBy=${sortBy})}">Next</a>
             </li>
         </ul>
     </nav>
